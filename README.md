@@ -97,40 +97,302 @@ The AdaBoost code is organized so that you can:
 
 ## How to run the project on Adroit
 
-Run the respective pipeline through the Adroit cluster using the included `job.slurm` files.  
-For example, when in the folder containing adaboost/hedge pipeline, simply run:
+## Running the project on Adroit
 
-`sbatch job.slurm` for the `job.slurm` file in either the `adaboost`, `default_50`, `plot_only_150`, or `report_only_150` folder.
+The project can be run on Adroit through the included Slurm configurations. The main analysis is the Hedge pipeline, and the AdaBoost pipeline is included as a smaller extension. The usual workflow is to enter the folder for the run you want and submit its `job.slurm` file.
 
-The "50" and "150" here just refer to the preset `T` in the `job.slurm`, which can be adjusted. See `hedge_run.py` for the toggles that can be employed in the `job.slurm` argument parsing.
+---
 
-**`--report-only` can be appended as in: `python hedge_run.py 150 --report-only`  
-to simulate `T = 150` runs (can adjust `T` here) and provide a printed report of results.**
+## Main entry points
 
-**`--figures-only` can be appended as in: `python hedge_run.py 150 --figures-only`  
-to simulate `T = 150` runs (can adjust `T` here) and provide only the saved figures.**
+Use these files to run the project:
 
-**Running `python hedge_run.py T` with no parentheses runs the simulation for that many  
-rounds `T`, otherwise defaulting to `50`. By default it provides the report and figures.**
+- `hedge_run.py` for the Hedge pipeline
+- `adaboost_run.py` for the AdaBoost extension
 
-**Running `python hedge_run.py` runs the simulation for `T = 50` rounds by default and  
-provides the report and figures.**
+The notebook files are for interactive inspection and verification. They are not the primary cluster workflow.
 
-The pipeline/job naming convention is:
+Do not run `hedge_core.py`, `hedge_plots.py`, or `adaboost_core.py` directly if you want the full project outputs. Those files define the underlying functions. The run files are the correct execution entry points.
 
-- **`adaboost`** for the AdaBoost case,
-- **`plot_only_150`** for a figure-only Hedge job with `T = 150`,
-- **`report_only_150`** for a report-only Hedge job,
-- **`default_50`** for the Hedge run with `T = 50` that writes both figures and reports.
+---
 
-Submit the corresponding configuration through Adroit with `sbatch job.slurm`. The attached `job.slurm` configurations are intended to cover those cases.
+## Getting the repository onto Adroit
 
-The two main pipeline files are:
+On Adroit, first move into the scratch location where the repository should be cloned. Replace `<YourNetID>` with the relevant NetID and replace `<repository-url>` with the GitHub repository URL.
 
-- `hedge_run.py` for Hedge,
-- `adaboost_run.py` for AdaBoost.
+```bash
+cd /scratch/network/<YourNetID>/
+git clone <repository-url>
+cd Final-Project
+```
 
-The notebook files are for interactive inspection and verification, not the primary cluster workflow.
+After entering `Final-Project`, move into the desired run folder before submitting the Slurm job. For example:
+
+```bash
+cd default_50
+sbatch job.slurm
+```
+
+or:
+
+```bash
+cd adaboost
+sbatch job.slurm
+```
+
+---
+
+## Getting the repository onto a local machine
+
+For a local machine, clone the repository from the directory where the project folder should be created:
+
+```bash
+git clone <repository-url>
+cd Final-Project
+```
+
+From there, run the desired Python entry point directly or open the notebooks for interactive inspection.
+
+---
+
+## Slurm run configurations
+
+The repository includes separate folders for common Slurm configurations. Each folder contains a sample `job.slurm` file.
+
+The naming convention is:
+
+- `default_50` for the Hedge run with `T = 50` that writes both the report and figures
+- `plot_only_150` for a Hedge run with `T = 150` that writes only figures
+- `report_only_150` for a Hedge run with `T = 150` that writes only the text report
+- `adaboost` for the AdaBoost extension
+
+The values `50` and `150` are preset choices in the provided Slurm files. They can be changed by editing the Python command inside the relevant `job.slurm` file.
+
+---
+
+## Submitting a job
+
+From the repository root, move into the desired run folder and submit the included Slurm script.
+
+### Hedge default run
+
+```bash
+cd default_50
+sbatch job.slurm
+```
+
+This corresponds to:
+
+```bash
+python hedge_run.py
+```
+
+It uses the default horizon `T = 50` and writes both the Hedge report and figures.
+
+### Hedge figures-only run
+
+```bash
+cd plot_only_150
+sbatch job.slurm
+```
+
+This corresponds to:
+
+```bash
+python hedge_run.py 150 --figures-only
+```
+
+It runs the Hedge simulation for `T = 150` and writes only the figures.
+
+### Hedge report-only run
+
+```bash
+cd report_only_150
+sbatch job.slurm
+```
+
+This corresponds to:
+
+```bash
+python hedge_run.py 150 --report-only
+```
+
+It runs the Hedge simulation for `T = 150` and writes only the text report.
+
+### AdaBoost run
+
+```bash
+cd adaboost
+sbatch job.slurm
+```
+
+This corresponds to:
+
+```bash
+python adaboost_run.py
+```
+
+It runs the default AdaBoost extension experiments and writes the AdaBoost report and figures.
+
+After submitting one job, return to the repository root before entering another run folder:
+
+```bash
+cd ..
+```
+
+---
+
+## Hedge command options
+
+The Hedge run file supports an optional simulation horizon `T` and two mutually exclusive output modes:
+
+- `--report-only`
+- `--figures-only`
+
+The main command forms are:
+
+```bash
+python hedge_run.py
+python hedge_run.py T
+python hedge_run.py T --report-only
+python hedge_run.py T --figures-only
+```
+
+These behave as follows:
+
+- `python hedge_run.py` runs with the default horizon `T = 50` and writes both the report and figures.
+- `python hedge_run.py T` runs for `T` rounds and writes both the report and figures.
+- `python hedge_run.py T --report-only` runs for `T` rounds and writes only the text report.
+- `python hedge_run.py T --figures-only` runs for `T` rounds and writes only the figures.
+
+Examples:
+
+```bash
+python hedge_run.py 150 --report-only
+python hedge_run.py 150 --figures-only
+```
+
+The run script automatically locates the project folder containing `hedge_core.py` and `hedge_plots.py`, changes into that directory, creates the output directories, runs all Hedge cases, and then writes the requested outputs.
+
+---
+
+## AdaBoost command options
+
+The AdaBoost run file supports an optional number of boosting rounds and an optional output directory.
+
+The main command forms are:
+
+```bash
+python adaboost_run.py
+python adaboost_run.py 40
+python adaboost_run.py 40 --output-dir my_adaboost_results
+```
+
+These behave as follows:
+
+- `python adaboost_run.py` runs the default AdaBoost experiments for `25` boosting rounds.
+- `python adaboost_run.py 40` runs the AdaBoost experiments for `40` boosting rounds.
+- `python adaboost_run.py 40 --output-dir my_adaboost_results` runs for `40` boosting rounds and writes outputs under `my_adaboost_results/`.
+
+The run script automatically locates the project folder containing `adaboost_core.py`, changes into that directory, creates the output directories, runs the default AdaBoost experiments, writes the report, saves figures, and prints a report preview.
+
+---
+
+## Expected outputs
+
+After a successful Hedge run, the output paths are:
+
+- report: `results/hedge_results.txt`
+- figures: `results/figures/`
+
+After a successful AdaBoost run, the default output paths are:
+
+- report: `results_adaboost/adaboost_results.txt`
+- figures: `results_adaboost/figures/`
+
+If `--output-dir` is passed to `adaboost_run.py`, then the AdaBoost report and figures are written under that custom output directory instead.
+
+---
+
+## Editing a sample `job.slurm`
+
+The provided `job.slurm` files are sample Slurm launchers. To change the run length or output mode, edit the Python command inside the relevant file.
+
+For example, a Hedge full run may contain a command like:
+
+```bash
+python hedge_run.py
+```
+
+To run for `T = 150` and write both report and figures, change it to:
+
+```bash
+python hedge_run.py 150
+```
+
+To write only the report, use:
+
+```bash
+python hedge_run.py 150 --report-only
+```
+
+To write only the figures, use:
+
+```bash
+python hedge_run.py 150 --figures-only
+```
+
+For AdaBoost, a default command may be:
+
+```bash
+python adaboost_run.py
+```
+
+To run for `40` boosting rounds, change it to:
+
+```bash
+python adaboost_run.py 40
+```
+
+To run for `40` boosting rounds and choose a custom output directory, use:
+
+```bash
+python adaboost_run.py 40 --output-dir my_adaboost_results
+```
+
+---
+
+## Recommended workflow
+
+For the main analysis:
+
+1. Run the Hedge pipeline first, usually with the `default_50` or `report_only_150` configuration.
+2. Inspect `results/hedge_results.txt`.
+3. Inspect representative figures under `results/figures/`.
+4. Use `hedge_run.ipynb` only if interactive figure review is needed.
+
+For the extension:
+
+1. Run the AdaBoost pipeline through the `adaboost` Slurm configuration.
+2. Inspect `results_adaboost/adaboost_results.txt`.
+3. Inspect the AdaBoost figures under `results_adaboost/figures/`.
+4. Use `adaboost_run.ipynb` only if interactive inspection is needed.
+
+---
+
+
+The Slurm files are included to make the cluster workflow reproducible. The Python run files are the true entry points: `hedge_run.py` runs the Hedge pipeline, and `adaboost_run.py` runs the AdaBoost extension. The core files provide the underlying functions, while the run files create the outputs used in the project report.
+
+
+
+## Quick reference
+
+| Task | Folder | Submit command | Underlying Python command |
+|---|---|---|---|
+| Hedge default run, `T = 50`, report and figures | `default_50` | `sbatch job.slurm` | `python hedge_run.py` |
+| Hedge figures only, `T = 150` | `plot_only_150` | `sbatch job.slurm` | `python hedge_run.py 150 --figures-only` |
+| Hedge report only, `T = 150` | `report_only_150` | `sbatch job.slurm` | `python hedge_run.py 150 --report-only` |
+| AdaBoost default run | `adaboost` | `sbatch job.slurm` | `python adaboost_run.py` |
 
 ---
 
