@@ -2,6 +2,13 @@
 
 ## Overview
 
+
+----
+
+This intermediary read-me is used to advise to click the default_50, plot_only_150, or report_only_150 folders in order to access the pipeline code.
+The difference between these folders is in the job.slurm file, but they otherwise have the same pipeline.
+
+----
 This project studies the discrete Hedge update under two regimes:
 
 1. **Stationary losses**, where the same loss vector is used at every time step.
