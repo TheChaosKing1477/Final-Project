@@ -388,7 +388,7 @@ The default horizon is:
 
 Run:
 
-```bash
+```
 python hedge_run.py
 ```
 
@@ -396,7 +396,7 @@ to use `T = 50`.
 
 Run:
 
-```bash
+```
 python hedge_run.py 100
 ```
 
@@ -615,13 +615,13 @@ The plotting code writes a large set of diagnostic figures. The list below expla
 
 From the project folder:
 
-```bash
+```
 python hedge_run.py
 ```
 
 or with a custom horizon:
 
-```bash
+```
 python hedge_run.py 150
 ```
 
