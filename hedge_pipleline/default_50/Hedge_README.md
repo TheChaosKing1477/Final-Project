@@ -17,15 +17,25 @@ The code is organized so that I can:
 
 The central object is the Hedge map
 
-\[
-F_i(w) = \frac{w_i e^{-\eta \ell_i}}{\sum_{j=1}^n w_j e^{-\eta \ell_j}},
-\]
+```math
+F_i(w) =
+\frac{
+w_i e^{-\eta \ell_i}
+}{
+\sum_{j=1}^{n} w_j e^{-\eta \ell_j}
+}
+```
 
 together with the simplex constraint
 
-\[
-\Delta^n = \{w \in \mathbb{R}^n : w_i \ge 0, \ \sum_i w_i = 1\}.
-\]
+```math
+\Delta^n =
+\left\{
+w \in \mathbb{R}^n :
+w_i \ge 0,\;
+\sum_i w_i = 1
+\right\}.
+```
 
 ---
 
@@ -95,9 +105,11 @@ Function:
 - `entropy(w)`
 
 Formula:
-\[
-H(w) = -\sum_i w_i \log w_i.
-\]
+
+```math
+H(w) =
+-\sum_i w_i \log w_i.
+```
 
 Interpretation:
 - larger entropy means the weight is more spread out,
@@ -109,9 +121,11 @@ Function:
 - `weighted_average_loss(w, ell)`
 
 Formula:
-\[
-\langle w, \ell \rangle = \sum_i w_i \ell_i.
-\]
+
+```math
+\langle w,\ell\rangle =
+\sum_i w_i \ell_i.
+```
 
 Interpretation:
 - in the stationary case, this is the quantity that appears in the continuous-time limit,
@@ -123,9 +137,15 @@ Function:
 - `hedge_update(w, ell, eta)`
 
 Formula:
-\[
-F_i(w) = \frac{w_i e^{-\eta \ell_i}}{\sum_j w_j e^{-\eta \ell_j}}.
-\]
+
+```math
+F_i(w) =
+\frac{
+w_i e^{-\eta \ell_i}
+}{
+\sum_j w_j e^{-\eta \ell_j}
+}.
+```
 
 Interpretation:
 - experts with lower loss receive relatively more weight,
@@ -137,17 +157,19 @@ Function:
 - `analytic_jacobian_stationary(w, ell, eta)`
 
 Formula:
-\[
+
+```math
 \frac{\partial F_i}{\partial w_k}
 =
 \frac{
-\delta_{ik} e^{-\eta \ell_i} \sum_j w_j e^{-\eta \ell_j}
+\delta_{ik} e^{-\eta \ell_i}
+\sum_j w_j e^{-\eta \ell_j}
 -
 w_i e^{-\eta \ell_i} e^{-\eta \ell_k}
 }{
 \left(\sum_j w_j e^{-\eta \ell_j}\right)^2
 }.
-\]
+```
 
 ### Numerical Jacobian on the simplex
 
@@ -164,9 +186,11 @@ Function:
 - `spectral_radius(matrix)`
 
 Formula:
-\[
-\rho(J) = \max_i |\lambda_i|.
-\]
+
+```math
+\rho(J) =
+\max_i |\lambda_i|.
+```
 
 Interpretation:
 - `rho(J) < 1` suggests contraction in the relevant directions,
@@ -179,9 +203,22 @@ Function:
 - `one_step_linearization_error(w_star, ell, eta, v, epsilon)`
 
 Formula:
-\[
-\frac{\|F(w^* + \varepsilon v) - F(w^*) - J(w^*)(\varepsilon v)\|}{\|\varepsilon v\|}.
-\]
+
+```math
+\frac{
+\left\|
+F(w^{*}+\varepsilon v)
+-
+F(w^{*})
+-
+J(w^{*})(\varepsilon v)
+\right\|
+}{
+\left\|
+\varepsilon v
+\right\|
+}.
+```
 
 Interpretation:
 - smaller values mean the local linearization accurately describes one nonlinear step near the fixed point.
@@ -192,18 +229,24 @@ Function:
 - `continuous_time_comparison_errors(weights, losses, eta)`
 
 Continuous-time model:
-\[
-\frac{dw_i}{d\tau} = w_i \bigl(\langle w, \ell \rangle - \ell_i\bigr).
-\]
+
+```math
+\frac{dw_i}{d\tau}
+=
+w_i\bigl(\langle w,\ell\rangle-\ell_i\bigr).
+```
 
 Discrete comparison:
-\[
-\frac{w_{t+1} - w_t}{\eta}
-\]
+
+```math
+\frac{w_{t+1}-w_t}{\eta}
+```
+
 versus
-\[
-w_t \bigl(\langle w_t, \ell_t \rangle - \ell_t\bigr).
-\]
+
+```math
+w_t\bigl(\langle w_t,\ell_t\rangle-\ell_t\bigr).
+```
 
 Interpretation:
 - smaller values mean the discrete dynamics more closely match the continuous-time approximation,
@@ -245,14 +288,16 @@ Interpretation:
 ### `unique_minimum`
 
 Loss vector:
-\[
+
+```math
 (0,1,2)
-\]
+```
 
 Initial weight:
-\[
-\left(\frac13, \frac13, \frac13\right)
-\]
+
+```math
+\left(\frac{1}{3},\frac{1}{3},\frac{1}{3}\right)
+```
 
 Interpretation:
 - expert 1 is uniquely best,
@@ -262,14 +307,16 @@ Interpretation:
 ### `equal_minimum_pair`
 
 Loss vector:
-\[
+
+```math
 (0,0,1)
-\]
+```
 
 Initial weight:
-\[
-(0.2, 0.8, 0.0)
-\]
+
+```math
+(0.2,0.8,0.0)
+```
 
 Interpretation:
 - experts 1 and 2 share the same minimum loss,
@@ -279,14 +326,16 @@ Interpretation:
 ### `all_equal`
 
 Loss vector:
-\[
+
+```math
 (1,1,1)
-\]
+```
 
 Initial weight:
-\[
+
+```math
 (0.2,0.3,0.5)
-\]
+```
 
 Interpretation:
 - all points are fixed points,
@@ -296,14 +345,17 @@ Interpretation:
 ### Periodic case
 
 Losses vary periodically with default period `20`:
-\[
+
+```math
 \ell_t =
 \left(
-0.5 + 0.4 \sin\left(\frac{2\pi t}{P}\right),
-0.5 - 0.4 \sin\left(\frac{2\pi t}{P}\right),
+0.5 + 0.4\sin\left(\frac{2\pi t}{P}\right),
+\;
+0.5 - 0.4\sin\left(\frac{2\pi t}{P}\right),
+\;
 1.0
 \right).
-\]
+```
 
 Interpretation:
 - experts 1 and 2 alternate in relative quality,
@@ -335,23 +387,29 @@ The default horizon is:
 ### Command line
 
 Run:
+
 ```bash
 python hedge_run.py
 ```
+
 to use `T = 50`.
 
 Run:
+
 ```bash
 python hedge_run.py 100
 ```
+
 to use `T = 100`.
 
 ### Notebook
 
 Set:
+
 ```python
 T = DEFAULT_HORIZON
 ```
+
 or replace it with another positive integer before running the simulation cell.
 
 ---
@@ -362,30 +420,35 @@ The plotting code writes a large set of diagnostic figures. The list below expla
 
 ### Stationary figures
 
-#### Time-dependent figures for each stationary case and each $\eta$
+#### Time-dependent figures for each stationary case and each `eta`
 
 - **Weight trajectories**  
-  These plot the coordinates of the weight vector $w_t$ against time $t$. They show how mass is redistributed among the experts over time.
+  These plot the coordinates of the weight vector `w_t` against time `t`. They show how mass is redistributed among the experts over time.
 
 - **Entropy trajectories**  
   These plot the Shannon entropy
-  \[
-  H(w_t) = -\sum_i w_{t,i}\log w_{t,i}.
-  \]
+
+  ```math
+  H(w_t) =
+  -\sum_i w_{t,i}\log w_{t,i}.
+  ```
+
   They measure how spread out or concentrated the weights are. Lower entropy means stronger concentration on fewer experts.
 
 - **Weighted average loss trajectories**  
   These plot
-  \[
+
+  ```math
   \langle w_t,\ell\rangle
-  \]
+  ```
+
   in the stationary regime. They show the loss currently induced by the weight vector and connect directly to the continuous-time limit.
 
 - **Continuous-time comparison error trajectories**  
   These plot the discrepancy between the discrete Hedge update and the corresponding continuous-time approximation. Smaller values mean closer agreement.
 
 - **Simplex trajectories**  
-  These show the full geometric path of $w_t$ in the simplex. They are useful for seeing whether trajectories move toward a vertex, remain on an edge, or stay fixed.
+  These show the full geometric path of `w_t` in the simplex. They are useful for seeing whether trajectories move toward a vertex, remain on an edge, or stay fixed.
 
 - **Phase portraits**  
   These show the vector field induced by one Hedge step across the simplex. They visualize local attraction, repulsion, and neutral directions.
@@ -396,66 +459,68 @@ The plotting code writes a large set of diagnostic figures. The list below expla
 - **Lower-loss-expert share / indicator trajectories**, when relevant  
   These record either the share of weight placed on the lower-loss side or a binary indicator of whether that side currently carries the larger weight.
 
-#### Across-$\eta$ stationary figures
+#### Across-eta stationary figures
 
-- **Weight $\eta$ panels**  
-  These compare the weight trajectories across several values of $\eta$.
+- **Weight eta panels**  
+  These compare the weight trajectories across several values of `eta`.
 
-- **Simplex $\eta$ panels**  
-  These compare the geometric trajectories in the simplex across $\eta$.
+- **Simplex eta panels**  
+  These compare the geometric trajectories in the simplex across `eta`.
 
-- **Phase $\eta$ panels**  
-  These compare the vector fields across $\eta$ and show how the strength of the motion changes with the learning rate.
+- **Phase eta panels**  
+  These compare the vector fields across `eta` and show how the strength of the motion changes with the learning rate.
 
-- **Entropy $\eta$ panels**  
-  These compare concentration of the weights across $\eta$.
+- **Entropy eta panels**  
+  These compare concentration of the weights across `eta`.
 
-- **Average-loss $\eta$ panels**  
-  These compare the weighted average loss trajectories across $\eta$.
+- **Average-loss eta panels**  
+  These compare the weighted average loss trajectories across `eta`.
 
-- **Continuous-time-error $\eta$ panels**  
-  These compare the discrete-versus-continuous discrepancy across $\eta$.
+- **Continuous-time-error eta panels**  
+  These compare the discrete-versus-continuous discrepancy across `eta`.
 
-- **Preferred-margin $\eta$ panels**, when relevant  
-  These compare the lower-loss-side weight advantage across $\eta$.
+- **Preferred-margin eta panels**, when relevant  
+  These compare the lower-loss-side weight advantage across `eta`.
 
-- **Lower-loss-expert share / indicator $\eta$ panels**, when relevant  
-  These compare whether and how strongly the lower-loss side is favored across $\eta$.
+- **Lower-loss-expert share / indicator eta panels**, when relevant  
+  These compare whether and how strongly the lower-loss side is favored across `eta`.
 
 - **Spectral-radius panels by representative fixed point**  
-  These plot the spectral radius $\rho(J)$ of the Jacobian at representative fixed points. The spectral radius is the modulus of the largest eigenvalue; values below $1$ indicate contraction, while values above $1$ indicate local expansion.
+  These plot the spectral radius `rho(J)` of the Jacobian at representative fixed points. The spectral radius is the modulus of the largest eigenvalue; values below `1` indicate contraction, while values above `1` indicate local expansion.
 
-- **Spectral radius vs $\eta$**  
+- **Spectral radius vs eta**  
   This summarizes how the local contraction or expansion strength changes with the learning rate.
 
-- **Jacobian difference norm vs $\eta$**  
+- **Jacobian difference norm vs eta**  
   This plots the norm of the difference between the analytical Jacobian and the numerically approximated Jacobian.
 
-- **Eigenvalue discrepancy vs $\eta$**  
+- **Eigenvalue discrepancy vs eta**  
   This plots the discrepancy between analytically predicted eigenvalues and numerically computed eigenvalues.
 
-- **Linearization error vs $\eta$**  
+- **Linearization error vs eta**  
   This compares the true one-step update with the Jacobian-based linearized prediction near a fixed point.
 
-- **Average step size vs $\eta$**  
+- **Average step size vs eta**  
   This records the mean size of the one-step changes
-  \[
+
+  ```math
   \|w_{t+1}-w_t\|
-  \]
+  ```
+
   across the full trajectory.
 
-- **Final entropy vs $\eta$**  
-  This records the final degree of concentration of the weight vector for each $\eta$.
+- **Final entropy vs eta**  
+  This records the final degree of concentration of the weight vector for each `eta`.
 
-- **Final weighted average loss vs $\eta$**  
-  This records the final weighted average loss for each $\eta$.
+- **Final weighted average loss vs eta**  
+  This records the final weighted average loss for each `eta`.
 
-- **Mean continuous-time comparison error vs $\eta$**  
-  This compresses the full continuous-time error trajectory into a single mean value for each $\eta$.
+- **Mean continuous-time comparison error vs eta**  
+  This compresses the full continuous-time error trajectory into a single mean value for each `eta`.
 
 ### Periodic figures
 
-#### Time-dependent figures for each $\eta$
+#### Time-dependent figures for each `eta`
 
 - **Weight trajectories**  
   These show how the expert weights change over time when the lower-loss expert alternates.
@@ -465,9 +530,11 @@ The plotting code writes a large set of diagnostic figures. The list below expla
 
 - **Weighted average loss trajectories**  
   These plot
-  \[
+
+  ```math
   \langle w_t,\ell_t\rangle
-  \]
+  ```
+
   under the time-varying loss sequence.
 
 - **Continuous-time comparison error trajectories**  
@@ -478,55 +545,57 @@ The plotting code writes a large set of diagnostic figures. The list below expla
 
 - **Step-size trajectories**  
   These plot
-  \[
+
+  ```math
   \|w_{t+1}-w_t\|
-  \]
+  ```
+
   over time and therefore measure how aggressively the weights move at each step.
 
 - **Simplex trajectories**  
   These show the geometric oscillation of the weight vector in the simplex under the periodic loss sequence.
 
-#### Across-$\eta$ periodic figures
+#### Across-eta periodic figures
 
-- **Weight $\eta$ panels**  
-  These compare the periodic weight trajectories across $\eta$.
+- **Weight eta panels**  
+  These compare the periodic weight trajectories across `eta`.
 
-- **Simplex $\eta$ panels**  
-  These compare the geometric oscillatory trajectories across $\eta$.
+- **Simplex eta panels**  
+  These compare the geometric oscillatory trajectories across `eta`.
 
-- **Preferred-weight margin $\eta$ panels**  
-  These compare the size of the lower-loss expert’s weight advantage across $\eta$.
+- **Preferred-weight margin eta panels**  
+  These compare the size of the lower-loss expert’s weight advantage across `eta`.
 
-- **Step-size $\eta$ panels**  
-  These compare how aggressively the weight vector moves across $\eta$.
+- **Step-size eta panels**  
+  These compare how aggressively the weight vector moves across `eta`.
 
-- **Entropy $\eta$ panels**  
-  These compare concentration of the periodic weight vector across $\eta$.
+- **Entropy eta panels**  
+  These compare concentration of the periodic weight vector across `eta`.
 
-- **Average-loss $\eta$ panels**  
-  These compare the weighted average loss trajectories across $\eta$.
+- **Average-loss eta panels**  
+  These compare the weighted average loss trajectories across `eta`.
 
-- **Continuous-time-error $\eta$ panels**  
-  These compare the discrete-versus-continuous discrepancy across $\eta$.
+- **Continuous-time-error eta panels**  
+  These compare the discrete-versus-continuous discrepancy across `eta`.
 
-- **Hard tracking accuracy vs $\eta$**  
-  This records the fraction of time steps at which the currently lower-loss expert also has at least as much weight as its main competitor. This is a strict $0/1$ diagnostic and should be interpreted cautiously.
+- **Hard tracking accuracy vs eta**  
+  This records the fraction of time steps at which the currently lower-loss expert also has at least as much weight as its main competitor. This is a strict `0/1` diagnostic and should be interpreted cautiously.
 
-- **Mean preferred-expert share vs $\eta$**  
+- **Mean preferred-expert share vs eta**  
   This records the time-average of the weight placed on the currently lower-loss expert. It is typically more informative than hard tracking accuracy.
 
-- **Average step size vs $\eta$**  
-  This summarizes how aggressive the reweighting is for each $\eta$.
+- **Average step size vs eta**  
+  This summarizes how aggressive the reweighting is for each `eta`.
 
-- **Final entropy vs $\eta$**  
-  This records the final concentration of the periodic weight vector for each $\eta$.
+- **Final entropy vs eta**  
+  This records the final concentration of the periodic weight vector for each `eta`.
 
-- **Final weighted average loss vs $\eta$**  
-  This records the final weighted average loss for each $\eta$.
+- **Final weighted average loss vs eta**  
+  This records the final weighted average loss for each `eta`.
 
 ### How to interpret the main plot quantities
 
-- **Weight trajectory:** the sequence of expert weights $w_t$ over time.
+- **Weight trajectory:** the sequence of expert weights `w_t` over time.
 - **Simplex trajectory:** the same sequence viewed geometrically in the simplex.
 - **Phase portrait:** the local update direction across the simplex.
 - **Spectral radius:** the modulus of the largest eigenvalue of the Jacobian.
@@ -536,7 +605,7 @@ The plotting code writes a large set of diagnostic figures. The list below expla
 - **Continuous-time error:** the discrepancy between the discrete Hedge update and the corresponding continuous-time approximation.
 - **Preferred margin / preferred-weight margin:** the signed weight advantage of the lower-loss side over its competitor. The sign indicates which side dominates; the magnitude measures how strong that dominance is.
 - **Preferred-expert share:** the weight assigned to the currently lower-loss expert, averaged over time in the periodic setting.
-- **Step size:** the size of the one-step reweighting move, measured by $\|w_{t+1}-w_t\|$.
+- **Step size:** the size of the one-step reweighting move, measured by `||w_{t+1}-w_t||`.
 
 ---
 
@@ -545,11 +614,13 @@ The plotting code writes a large set of diagnostic figures. The list below expla
 ### Script
 
 From the project folder:
+
 ```bash
 python hedge_run.py
 ```
 
 or with a custom horizon:
+
 ```bash
 python hedge_run.py 150
 ```
@@ -574,15 +645,19 @@ Open `hedge_run.ipynb`, then:
 The notebook includes a `subplot_only` toggle.
 
 Set:
+
 ```python
 subplot_only = True
 ```
+
 to display only eta-panel / subplot figures.
 
 Set:
+
 ```python
 subplot_only = False
 ```
+
 to additionally display a smaller set of single representative figures.
 
 The most useful first-pass review is:
