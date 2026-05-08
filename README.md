@@ -1,7 +1,5 @@
 # Final-Project
 
-Final GitHub Assignment
-
 To run this project, choose whether you want to execute the **Hedge pipeline**, the **AdaBoost extension**, or both. The Hedge analysis is the main body of the project. AdaBoost is included as a smaller extension that studies a related multiplicative-weights update on training-example weights.
 
 This repository contains:
