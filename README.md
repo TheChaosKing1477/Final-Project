@@ -22,7 +22,7 @@ This project has two connected computational components.
 
 ### 1. Hedge pipeline
 
-The main project studies the discrete Hedge update under two regimes:
+The main pipeline studies the discrete Hedge update under two regimes:
 
 1. **Stationary losses**, where the same loss vector is used at every time step.
 2. **Periodic structured losses**, where the relative quality of the first two experts changes over time.
