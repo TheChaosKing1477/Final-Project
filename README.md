@@ -118,11 +118,11 @@ Do not run `hedge_core.py`, `hedge_plots.py`, or `adaboost_core.py` directly if 
 
 ## Getting the repository onto Adroit
 
-On Adroit, first move into the scratch location where the repository should be cloned. Replace `<YourNetID>` with the relevant NetID and replace `<repository-url>` with the GitHub repository URL.
+On Adroit, first move into the scratch location where the repository should be cloned. Replace `<YourNetID>` with your relevant NetID/username. Here the format is git clone <repository-url>, where I plug in this github repository https://github.com/TheChaosKing1477/Final-Project. 
 
 ```bash
 cd /scratch/network/<YourNetID>/
-git clone <repository-url>
+git clone https://github.com/TheChaosKing1477/Final-Project
 cd Final-Project
 ```
 
