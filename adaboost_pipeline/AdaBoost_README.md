@@ -63,7 +63,7 @@ It:
 
 From the project folder:
 
-```bash
+```
 python adaboost_run.py
 ```
 
@@ -74,13 +74,13 @@ This runs the default experiments for `25` boosting rounds and writes:
 
 To choose a different number of boosting rounds:
 
-```bash
+```
 python adaboost_run.py 40
 ```
 
 To choose a different output directory:
 
-```bash
+```
 python adaboost_run.py 40 --output-dir my_adaboost_results
 ```
 
@@ -140,9 +140,12 @@ This is the weighted classification error of the current decision stump under th
 
 This is
 
-\[
-\gamma_t = \frac12 - \varepsilon_t,
-\]
+```math
+\gamma_t =
+\frac{1}{2}
+-
+\varepsilon_t.
+```
 
 where `\varepsilon_t` is the weighted weak-learner error.
 
@@ -154,9 +157,12 @@ Interpretation:
 
 This is
 
-\[
-\alpha_t = \frac12 \log\frac{1-\varepsilon_t}{\varepsilon_t}.
-\]
+```math
+\alpha_t =
+\frac{1}{2}
+\log
+\frac{1-\varepsilon_t}{\varepsilon_t}.
+```
 
 Interpretation:
 - better weak learners receive larger coefficients in the ensemble.
@@ -172,9 +178,9 @@ Interpretation:
 
 This is
 
-\[
+```math
 \frac{1}{\sum_i D_t(i)^2}.
-\]
+```
 
 Interpretation:
 - smaller effective sample size means the weights are concentrating more strongly.
@@ -190,9 +196,9 @@ Interpretation:
 
 The sample margins are
 
-\[
-y_i F_t(x_i),
-\]
+```math
+y_i F_t(x_i).
+```
 
 where `F_t` is the current ensemble score.
 
@@ -228,25 +234,23 @@ If the weighted error becomes essentially zero immediately and stays there, the 
 
 ---
 
-## Cluster use
+## Cluster
 
 For cluster use, run:
 
-```bash
-python adaboost_run.py
+```python adaboost_run.py
 ```
 
 or
 
-```bash
-python adaboost_run.py 40
+```python adaboost_run.py 40
 ```
 
 `adaboost_core.py` by itself defines functions but does not execute them on import. The separate driver `adaboost_run.py` is the correct script for standalone cluster execution.
 
 ---
 
-## Final note
+## Final Note
 
 The AdaBoost extension is intended to remain minor relative to the main Hedge analysis. The cleanest use is:
 
