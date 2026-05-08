@@ -239,7 +239,7 @@ It runs the default AdaBoost extension experiments and writes the AdaBoost repor
 After submitting one job, return to the repository root before entering another run folder:
 
 ```bash
-cd ..
+cd -
 ```
 
 ---
