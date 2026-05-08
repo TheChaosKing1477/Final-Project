@@ -838,7 +838,7 @@ Two overlapping Gaussian classes in `\mathbb{R}^2`.
 
 #### `xor_checkerboard`
 
-An XOR-style checkerboard dataset in `\mathbb{R}^2`.
+An XOR-style checkerboard dataset in `R^2`.
 
 **Why it is preferable here:**
 - it is not solvable by a single axis-aligned stump,
@@ -860,7 +860,7 @@ This is the weighted classification error of the current decision stump under th
 \gamma_t=\frac{1}{2}-\varepsilon_t.
 ```
 
-where `\varepsilon_t` is the weighted weak-learner error.
+where `ε` is the weighted weak-learner error.
 
 **Interpretation:**
 - positive edge means the weak learner performs better than random,
