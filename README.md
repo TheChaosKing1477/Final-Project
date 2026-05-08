@@ -96,25 +96,21 @@ The AdaBoost code is organized so that you can:
 Run the respective pipeline through the Adroit cluster using the included `job.slurm` files.
 For example, when in the folder containing adaboost/hedge pipeline, simply run:
 
-sbatch job.slurm 
+sbatch job.slurm for the job.slurm file in either the adaboost, default_50, plot_only_150, or report_only_150 folder.
 
-in either the adaboost, default_50, plot_only_150, or report_only_150.
+The "50" and "150" here just refer to the preset T in the job.slurm, which can be adjusted. See hedge_run.py for the toggles that can be employed in the job.slurm argument parsing.
 
-The "50" and "150" here just refer to the preset T in the job.slurm, which can be adjusted.
+**--report-only can be appended as in: python hedge_run.py 150 --report-only
+to simulate T = 150 runs (can adjust T here) and provide a printed report of results.**
 
-See hedge_run.py for the toggles that can be employed in the job.slurm argument parsing.
+**--figures-only can be appended as in: python hedge_run.py 150 --figures-only
+to simulate T = 150 runs (can adjust T here) and provide only the saved figures.**
 
---report-only can be appended as in: python hedge_run.py 150 --report-only
-to simulate T = 150 runs (can adjust T here) and provide a printed report of results.
+**Running python hedge_run.py (T) with no parenthesis runs the simulation for that many
+rounds T, otherwise defaulting to 50. By default it provides the report and figures.**
 
---figures-only can be appended as in: python hedge_run.py 150 --figures-only
-to simulate T = 150 runs (can adjust T here) and provide only the saved figures.
-
-Running python hedge_run.py (T) with no parenthesis runs the simulation for that many
-rounds T, otherwise defaulting to 50. By default it provides the report and figures.
-
-Running python hedge_run.py runs the simulation for T = 50 rounds by default and
-provides the report and figures.
+**Running python hedge_run.py runs the simulation for T = 50 rounds by default and
+provides the report and figures.**
 
 The pipeline/job naming convention is:
 
