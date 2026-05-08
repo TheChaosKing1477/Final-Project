@@ -140,6 +140,8 @@ cd adaboost
 sbatch job.slurm
 ```
 
+It can be helpful here to run commands like "ls -1" to determine what folders and files are contained in the current directory. You can find the adaboost pipeline in the adaboost_pipeline folder, and the hedge pipeline in the hedge_pipeline folder.
+
 ---
 
 ## Getting the repository onto a local machine
