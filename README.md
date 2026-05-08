@@ -35,11 +35,15 @@ The Hedge code is organized so that you can:
 
 The central Hedge map is:
 
-`F_i(w) = w_i exp(-eta * ell_i) / sum_j [w_j exp(-eta * ell_j)]`
+```math
+F_i(w)=\frac{w_i e^{-\eta \ell_i}}{\sum_j w_j e^{-\eta \ell_j}}.
+```
 
 The weights always remain on the simplex:
 
-`Delta^n = { w in R^n : w_i >= 0 and sum_i w_i = 1 }`
+```math
+\Delta^n=\{\,w\in\mathbb{R}^n : w_i\ge 0 \text{ and } \sum_i w_i = 1\,\}.
+```
 
 ### 2. AdaBoost extension
 
@@ -93,23 +97,23 @@ The AdaBoost code is organized so that you can:
 
 ## How to run the project on Adroit
 
-Run the respective pipeline through the Adroit cluster using the included `job.slurm` files.
+Run the respective pipeline through the Adroit cluster using the included `job.slurm` files.  
 For example, when in the folder containing adaboost/hedge pipeline, simply run:
 
-sbatch job.slurm for the job.slurm file in either the adaboost, default_50, plot_only_150, or report_only_150 folder.
+`sbatch job.slurm` for the `job.slurm` file in either the `adaboost`, `default_50`, `plot_only_150`, or `report_only_150` folder.
 
-The "50" and "150" here just refer to the preset T in the job.slurm, which can be adjusted. See hedge_run.py for the toggles that can be employed in the job.slurm argument parsing.
+The "50" and "150" here just refer to the preset `T` in the `job.slurm`, which can be adjusted. See `hedge_run.py` for the toggles that can be employed in the `job.slurm` argument parsing.
 
-**--report-only can be appended as in: python hedge_run.py 150 --report-only
-to simulate T = 150 runs (can adjust T here) and provide a printed report of results.**
+**`--report-only` can be appended as in: `python hedge_run.py 150 --report-only`  
+to simulate `T = 150` runs (can adjust `T` here) and provide a printed report of results.**
 
-**--figures-only can be appended as in: python hedge_run.py 150 --figures-only
-to simulate T = 150 runs (can adjust T here) and provide only the saved figures.**
+**`--figures-only` can be appended as in: `python hedge_run.py 150 --figures-only`  
+to simulate `T = 150` runs (can adjust `T` here) and provide only the saved figures.**
 
-**Running python hedge_run.py (T) with no parenthesis runs the simulation for that many
-rounds T, otherwise defaulting to 50. By default it provides the report and figures.**
+**Running `python hedge_run.py T` with no parentheses runs the simulation for that many  
+rounds `T`, otherwise defaulting to `50`. By default it provides the report and figures.**
 
-**Running python hedge_run.py runs the simulation for T = 50 rounds by default and
+**Running `python hedge_run.py` runs the simulation for `T = 50` rounds by default and  
 provides the report and figures.**
 
 The pipeline/job naming convention is:
@@ -137,7 +141,11 @@ The notebook files are for interactive inspection and verification, not the prim
 **Function:**
 - `entropy(w)`
 
-**Formula:** `H(w) = -sum_i w_i log w_i`
+**Formula:**
+
+```math
+H(w)=-\sum_i w_i\log w_i.
+```
 
 **Interpretation:**
 - larger entropy means the weight is more spread out,
@@ -148,7 +156,11 @@ The notebook files are for interactive inspection and verification, not the prim
 **Function:**
 - `weighted_average_loss(w, ell)`
 
-**Formula:** `<w, ell> = sum_i w_i ell_i`
+**Formula:**
+
+```math
+\langle w,\ell\rangle=\sum_i w_i\ell_i.
+```
 
 **Interpretation:**
 - in the stationary case, this is the quantity that appears in the continuous-time limit,
@@ -159,7 +171,11 @@ The notebook files are for interactive inspection and verification, not the prim
 **Function:**
 - `hedge_update(w, ell, eta)`
 
-**Formula:** `F_i(w) = w_i exp(-eta * ell_i) / sum_j [w_j exp(-eta * ell_j)]`
+**Formula:**
+
+```math
+F_i(w)=\frac{w_i e^{-\eta \ell_i}}{\sum_j w_j e^{-\eta \ell_j}}.
+```
 
 **Interpretation:**
 - experts with lower loss receive relatively more weight,
@@ -172,7 +188,17 @@ The notebook files are for interactive inspection and verification, not the prim
 
 **Formula:**
 
-`dF_i/dw_k = [delta_ik exp(-eta ell_i) sum_j w_j exp(-eta ell_j) - w_i exp(-eta ell_i) exp(-eta ell_k)] / [sum_j w_j exp(-eta ell_j)]^2`
+```math
+\frac{\partial F_i}{\partial w_k}
+=
+\frac{
+\delta_{ik} e^{-\eta \ell_i}\sum_j w_j e^{-\eta \ell_j}
+-
+w_i e^{-\eta \ell_i} e^{-\eta \ell_k}
+}{
+\left(\sum_j w_j e^{-\eta \ell_j}\right)^2
+}.
+```
 
 ### Numerical Jacobian on the simplex
 
@@ -188,7 +214,11 @@ The notebook files are for interactive inspection and verification, not the prim
 **Function:**
 - `spectral_radius(matrix)`
 
-**Formula:** `rho(J) = max_i |lambda_i|`
+**Formula:**
+
+```math
+\rho(J)=\max_i |\lambda_i|.
+```
 
 **Interpretation:**
 - `rho(J) < 1` suggests contraction in the relevant directions,
@@ -202,7 +232,13 @@ The notebook files are for interactive inspection and verification, not the prim
 
 **Formula:**
 
-`||F(w* + epsilon v) - F(w*) - J(w*)(epsilon v)|| / ||epsilon v||`
+```math
+\frac{
+\left\|F(w^{*}+\varepsilon v)-F(w^{*})-J(w^{*})(\varepsilon v)\right\|
+}{
+\left\|\varepsilon v\right\|
+}.
+```
 
 **Interpretation:**
 - smaller values mean the local linearization accurately describes one nonlinear step near the fixed point.
@@ -214,15 +250,21 @@ The notebook files are for interactive inspection and verification, not the prim
 
 **Continuous-time model:**
 
-`dw_i / d tau = w_i ( <w, ell> - ell_i )`
+```math
+\frac{dw_i}{d\tau}=w_i\bigl(\langle w,\ell\rangle-\ell_i\bigr).
+```
 
 **Discrete comparison:**
 
-`(w_{t+1} - w_t) / eta`
+```math
+\frac{w_{t+1}-w_t}{\eta}
+```
 
 versus
 
-`w_t ( <w_t, ell_t> - ell_t )`
+```math
+w_t\bigl(\langle w_t,\ell_t\rangle-\ell_t\bigr).
+```
 
 **Interpretation:**
 - smaller values mean the discrete dynamics more closely match the continuous-time approximation,
@@ -263,9 +305,17 @@ versus
 
 ### `unique_minimum`
 
-**Loss vector:** `(0, 1, 2)`
+**Loss vector:**
 
-**Initial weight:** `(1/3, 1/3, 1/3)`
+```math
+(0,1,2)
+```
+
+**Initial weight:**
+
+```math
+\left(\frac{1}{3},\frac{1}{3},\frac{1}{3}\right)
+```
 
 **Interpretation:**
 - expert 1 is uniquely best,
@@ -274,9 +324,17 @@ versus
 
 ### `equal_minimum_pair`
 
-**Loss vector:** `(0, 0, 1)`
+**Loss vector:**
 
-**Initial weight:** `(0.2, 0.8, 0.0)`
+```math
+(0,0,1)
+```
+
+**Initial weight:**
+
+```math
+(0.2,0.8,0.0)
+```
 
 **Interpretation:**
 - experts 1 and 2 share the same minimum loss,
@@ -285,9 +343,17 @@ versus
 
 ### `all_equal`
 
-**Loss vector:** `(1, 1, 1)`
+**Loss vector:**
 
-**Initial weight:** `(0.2, 0.3, 0.5)`
+```math
+(1,1,1)
+```
+
+**Initial weight:**
+
+```math
+(0.2,0.3,0.5)
+```
 
 **Interpretation:**
 - all points are fixed points,
@@ -298,7 +364,14 @@ versus
 
 **Losses vary periodically with default period `20`:**
 
-`ell_t = (0.5 + 0.4 sin(2 pi t / P), 0.5 - 0.4 sin(2 pi t / P), 1.0)`
+```math
+\ell_t=
+\left(
+0.5 + 0.4\sin\left(\frac{2\pi t}{P}\right),
+0.5 - 0.4\sin\left(\frac{2\pi t}{P}\right),
+1.0
+\right).
+```
 
 **Interpretation:**
 - experts 1 and 2 alternate in relative quality,
@@ -341,10 +414,22 @@ The Hedge plotting code writes a large set of diagnostic figures. The list below
   These plot the coordinates of the weight vector `w_t` against time `t`. They show how mass is redistributed among the experts over time.
 
 - **Entropy trajectories**  
-  These plot the Shannon entropy `H(w_t) = -sum_i w_{t,i} log w_{t,i}`. They measure how spread out or concentrated the weights are. Lower entropy means stronger concentration on fewer experts.
+  These plot the Shannon entropy
+
+  ```math
+  H(w_t)=-\sum_i w_{t,i}\log w_{t,i}.
+  ```
+
+  They measure how spread out or concentrated the weights are. Lower entropy means stronger concentration on fewer experts.
 
 - **Weighted average loss trajectories**  
-  These plot `<w_t, ell>` in the stationary regime. They show the loss currently induced by the weight vector and connect directly to the continuous-time limit.
+  These plot
+
+  ```math
+  \langle w_t,\ell\rangle
+  ```
+
+  in the stationary regime. They show the loss currently induced by the weight vector and connect directly to the continuous-time limit.
 
 - **Continuous-time comparison error trajectories**  
   These plot the discrepancy between the discrete Hedge update and the corresponding continuous-time approximation. Smaller values mean closer agreement.
@@ -470,7 +555,7 @@ The AdaBoost extension runs on three synthetic datasets:
 
 #### `gaussian_easy`
 
-Two well-separated Gaussian classes in `R^2`.
+Two well-separated Gaussian classes in `\mathbb{R}^2`.
 
 **Expected behavior:**
 - strong positive weak-learner edge,
@@ -479,7 +564,7 @@ Two well-separated Gaussian classes in `R^2`.
 
 #### `gaussian_overlap`
 
-Two overlapping Gaussian classes in `R^2`.
+Two overlapping Gaussian classes in `\mathbb{R}^2`.
 
 **Expected behavior:**
 - smaller weak-learner edge,
@@ -489,7 +574,7 @@ Two overlapping Gaussian classes in `R^2`.
 
 #### `xor_checkerboard`
 
-An XOR-style checkerboard dataset in `R^2`.
+An XOR-style checkerboard dataset in `\mathbb{R}^2`.
 
 **Why it is preferable here:**
 - it is not solvable by a single axis-aligned stump,
@@ -505,9 +590,13 @@ This is the weighted classification error of the current decision stump under th
 
 #### Weak-learner edge
 
-**Formula:** `gamma_t = 1/2 - epsilon_t`
+**Formula:**
 
-where `epsilon_t` is the weighted weak-learner error.
+```math
+\gamma_t=\frac{1}{2}-\varepsilon_t.
+```
+
+where `\varepsilon_t` is the weighted weak-learner error.
 
 **Interpretation:**
 - positive edge means the weak learner performs better than random,
@@ -515,7 +604,11 @@ where `epsilon_t` is the weighted weak-learner error.
 
 #### AdaBoost coefficient
 
-**Formula:** `alpha_t = (1/2) log((1 - epsilon_t) / epsilon_t)`
+**Formula:**
+
+```math
+\alpha_t=\frac{1}{2}\log\frac{1-\varepsilon_t}{\varepsilon_t}.
+```
 
 **Interpretation:**
 - better weak learners receive larger coefficients in the ensemble.
@@ -529,7 +622,11 @@ This measures concentration of mass on the training examples.
 
 #### Effective sample size
 
-**Formula:** `1 / sum_i D_t(i)^2`
+**Formula:**
+
+```math
+\frac{1}{\sum_i D_t(i)^2}.
+```
 
 **Interpretation:**
 - smaller effective sample size means the weights are concentrating more strongly.
@@ -543,7 +640,11 @@ This is the total sample weight assigned to examples with nonpositive current ma
 
 #### Margins
 
-**Formula:** `y_i F_t(x_i)`
+**Formula:**
+
+```math
+y_i F_t(x_i).
+```
 
 where `F_t` is the current ensemble score.
 
