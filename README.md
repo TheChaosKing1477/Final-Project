@@ -819,7 +819,7 @@ The AdaBoost extension runs on three synthetic datasets:
 
 #### `gaussian_easy`
 
-Two well-separated Gaussian classes in `\mathbb{R}^2`.
+Two well-separated Gaussian classes in `R^2`.
 
 **Expected behavior:**
 - strong positive weak-learner edge,
@@ -828,7 +828,7 @@ Two well-separated Gaussian classes in `\mathbb{R}^2`.
 
 #### `gaussian_overlap`
 
-Two overlapping Gaussian classes in `\mathbb{R}^2`.
+Two overlapping Gaussian classes in `R^2`.
 
 **Expected behavior:**
 - smaller weak-learner edge,
